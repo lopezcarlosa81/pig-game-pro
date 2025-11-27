@@ -109,3 +109,35 @@ input:focus {
 .btn-start:hover {
     transform: translateY(-2px);
 }
+
+@media (max-width: 600px) {
+    .setup-screen {
+        padding: 1rem;
+        height: auto;
+        min-height: 100vh;
+        justify-content: flex-start;
+        /* Allow scrolling from top */
+        padding-top: 2rem;
+        overflow-y: auto;
+    }
+
+    .title {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .setup-card {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .player-count-selector {
+        flex-wrap: wrap;
+    }
+
+    .names-list {
+        max-height: 200px;
+        /* Reduce list height on mobile */
+    }
+}

@@ -53,8 +53,8 @@
 
   .player-sidebar {
     width: 100%;
-    height: 140px;
-    /* More compact for mobile */
+    height: 200px;
+    /* Increased height to 200px to ensure no clipping */
     flex-direction: row;
     overflow-x: auto;
     overflow-y: hidden;
