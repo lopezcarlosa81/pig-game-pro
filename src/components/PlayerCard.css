@@ -1,0 +1,65 @@
+.player-card {
+    background: var(--color-bg-card);
+    border-radius: 0;
+    /* Reset for full height panels, or use layout container */
+    padding: var(--spacing-xl) var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid transparent;
+}
+
+/* We'll handle layout in App.css, but here we style the card internals */
+
+.player-card.active {
+    background: var(--color-bg-card-active);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.player-card.winner {
+    background: #2f2f2f;
+    border: 1px solid var(--color-accent);
+}
+
+.player-card.winner .player-name {
+    color: var(--color-accent);
+}
+
+.player-name {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.total-score {
+    font-size: 5rem;
+    font-weight: 200;
+    color: var(--color-accent);
+    margin-bottom: auto;
+    /* Push current box to bottom */
+}
+
+.current-box {
+    background: var(--color-accent);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-align: center;
+    width: 60%;
+    margin-top: var(--spacing-xl);
+}
+
+.current-label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+}
+
+.current-score {
+    font-size: 2rem;
+    color: #fff;
+}

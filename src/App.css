@@ -1,1 +1,60 @@
-/* App.css */
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-board {
+  position: relative;
+  width: 100rem;
+  height: 60rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.25);
+  display: flex;
+  overflow: hidden;
+}
+
+.center-controls {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  /* Move dice up a bit */
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+  .game-board {
+    width: 95vw;
+    height: 85vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-board {
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0;
+  }
+
+  .center-controls {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px;
+    order: 2;
+    /* Put controls in middle visually if using flex column, but absolute is easier for desktop */
+    transform: none;
+  }
+
+  /* We might need more specific mobile tweaks, but let's start here */
+}

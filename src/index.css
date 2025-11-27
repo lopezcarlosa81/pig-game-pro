@@ -1,1 +1,41 @@
 /* index.css */
+:root {
+  /* Color Palette - Premium Dark Theme */
+  --color-bg-dark: #1a1a1a;
+  --color-bg-card: rgba(255, 255, 255, 0.05);
+  --color-bg-card-active: rgba(255, 255, 255, 0.15);
+
+  --color-accent: #ff0055;
+  /* Vibrant Pink/Red for the "Pig" theme */
+  --color-accent-glow: rgba(255, 0, 85, 0.4);
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+
+  --color-dice-bg: #ffffff;
+  --color-dice-dot: #1a1a1a;
+
+  /* Spacing & Layout */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+
+  --border-radius-lg: 20px;
+  --border-radius-md: 12px;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  background-image: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
