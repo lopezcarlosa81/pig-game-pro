@@ -63,3 +63,17 @@
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
 }
+
+@media (max-width: 768px) {
+    .btn-new {
+        position: static;
+        transform: none;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        padding: 8px 20px;
+    }
+
+    .controls-container {
+        gap: 2rem;
+    }
+}

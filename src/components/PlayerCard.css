@@ -63,3 +63,32 @@
     font-size: 2rem;
     color: #fff;
 }
+
+@media (max-width: 768px) {
+    .player-card {
+        padding: var(--spacing-sm);
+    }
+
+    .player-name {
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }
+
+    .total-score {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .current-box {
+        width: 90%;
+        padding: 4px 8px;
+    }
+
+    .current-label {
+        font-size: 0.6rem;
+    }
+
+    .current-score {
+        font-size: 1.2rem;
+    }
+}
