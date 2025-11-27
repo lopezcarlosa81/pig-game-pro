@@ -40,7 +40,9 @@ export const useGame = () => {
 
         // Wait for animation
         setTimeout(() => {
-            const dice = Math.floor(Math.random() * 6) + 1;
+            const array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            const dice = (array[0] % 6) + 1;
 
             setGameState((prev) => {
                 // If rolled a 1
