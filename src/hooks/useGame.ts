@@ -1,97 +1,144 @@
 import { useState, useCallback } from 'react';
-import type { GameState } from '../types/game';
+import type { GameState, Player } from '../types/game';
 
 const WINNING_SCORE = 100;
 
 const INITIAL_STATE: GameState = {
-    players: {
-        1: { id: 1, name: 'Player 1', totalScore: 0, isActive: true },
-        2: { id: 2, name: 'Player 2', totalScore: 0, isActive: false },
-    },
+    status: 'setup',
+    players: [],
     currentTurnScore: 0,
-    activePlayerId: 1,
+    activePlayerIndex: 0,
     diceValue: null,
     winner: null,
-    isPlaying: true,
+    isRolling: false,
 };
 
 export const useGame = () => {
     const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
 
+    const setupGame = useCallback((playerNames: string[]) => {
+        const newPlayers: Player[] = playerNames.map((name, index) => ({
+            id: index + 1,
+            name: name || `Player ${index + 1}`,
+            totalScore: 0,
+            isActive: index === 0,
+        }));
+
+        setGameState({
+            ...INITIAL_STATE,
+            status: 'playing',
+            players: newPlayers,
+            activePlayerIndex: 0,
+        });
+    }, []);
+
     const rollDice = useCallback(() => {
-        if (gameState.winner) return;
+        if (gameState.status !== 'playing' || gameState.isRolling) return;
 
-        const dice = Math.floor(Math.random() * 6) + 1;
+        // Start rolling animation
+        setGameState(prev => ({ ...prev, isRolling: true }));
 
-        setGameState((prev) => {
-            // If rolled a 1
-            if (dice === 1) {
+        // Wait for animation
+        setTimeout(() => {
+            const dice = Math.floor(Math.random() * 6) + 1;
+
+            setGameState((prev) => {
+                // If rolled a 1
+                if (dice === 1) {
+                    const nextPlayerIndex = (prev.activePlayerIndex + 1) % prev.players.length;
+
+                    const updatedPlayers = prev.players.map((p, i) => ({
+                        ...p,
+                        isActive: i === nextPlayerIndex
+                    }));
+
+                    return {
+                        ...prev,
+                        diceValue: 1,
+                        currentTurnScore: 0,
+                        activePlayerIndex: nextPlayerIndex,
+                        players: updatedPlayers,
+                        isRolling: false,
+                    };
+                }
+
+                // If rolled 2-6
                 return {
                     ...prev,
-                    diceValue: 1,
-                    currentTurnScore: 0,
-                    activePlayerId: prev.activePlayerId === 1 ? 2 : 1,
-                    players: {
-                        ...prev.players,
-                        1: { ...prev.players[1], isActive: prev.activePlayerId === 2 },
-                        2: { ...prev.players[2], isActive: prev.activePlayerId === 1 },
-                    },
+                    diceValue: dice,
+                    currentTurnScore: prev.currentTurnScore + dice,
+                    isRolling: false,
                 };
-            }
-
-            // If rolled 2-6
-            return {
-                ...prev,
-                diceValue: dice,
-                currentTurnScore: prev.currentTurnScore + dice,
-            };
-        });
-    }, [gameState.winner]);
+            });
+        }, 800); // 800ms animation duration
+    }, [gameState.status, gameState.isRolling]);
 
     const holdScore = useCallback(() => {
-        if (gameState.winner) return;
+        if (gameState.status !== 'playing') return;
 
         setGameState((prev) => {
-            const activePlayer = prev.players[prev.activePlayerId];
+            const activePlayer = prev.players[prev.activePlayerIndex];
             const newTotalScore = activePlayer.totalScore + prev.currentTurnScore;
+
+            // Update the active player's score
+            const updatedPlayers = [...prev.players];
+            updatedPlayers[prev.activePlayerIndex] = {
+                ...activePlayer,
+                totalScore: newTotalScore
+            };
 
             // Check for win
             if (newTotalScore >= WINNING_SCORE) {
                 return {
                     ...prev,
-                    players: {
-                        ...prev.players,
-                        [prev.activePlayerId]: { ...activePlayer, totalScore: newTotalScore },
-                    },
-                    winner: prev.activePlayerId,
-                    isPlaying: false,
+                    players: updatedPlayers,
+                    winner: updatedPlayers[prev.activePlayerIndex],
+                    status: 'finished',
                     diceValue: null,
                 };
             }
 
             // Switch player
+            const nextPlayerIndex = (prev.activePlayerIndex + 1) % prev.players.length;
+
+            // Update active status
+            updatedPlayers[prev.activePlayerIndex].isActive = false;
+            updatedPlayers[nextPlayerIndex].isActive = true;
+
             return {
                 ...prev,
-                players: {
-                    ...prev.players,
-                    [prev.activePlayerId]: { ...activePlayer, totalScore: newTotalScore, isActive: false },
-                    [prev.activePlayerId === 1 ? 2 : 1]: { ...prev.players[prev.activePlayerId === 1 ? 2 : 1], isActive: true },
-                },
+                players: updatedPlayers,
                 currentTurnScore: 0,
-                activePlayerId: prev.activePlayerId === 1 ? 2 : 1,
+                activePlayerIndex: nextPlayerIndex,
                 diceValue: null,
             };
         });
-    }, [gameState.winner]);
+    }, [gameState.status]);
 
     const resetGame = useCallback(() => {
+        // Restart with same players
+        setGameState((prev) => ({
+            ...INITIAL_STATE,
+            status: 'playing',
+            players: prev.players.map((p, i) => ({
+                ...p,
+                totalScore: 0,
+                isActive: i === 0
+            })),
+            activePlayerIndex: 0,
+        }));
+    }, []);
+
+    const backToSetup = useCallback(() => {
         setGameState(INITIAL_STATE);
     }, []);
 
     return {
         gameState,
+        setupGame,
         rollDice,
         holdScore,
         resetGame,
+        backToSetup
     };
 };

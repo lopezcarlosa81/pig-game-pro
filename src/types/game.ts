@@ -1,19 +1,18 @@
-export type PlayerId = 1 | 2;
+export type GameStatus = 'setup' | 'playing' | 'finished';
 
 export interface Player {
-    id: PlayerId;
+    id: number;
     name: string;
     totalScore: number;
     isActive: boolean;
 }
 
 export interface GameState {
-    players: {
-        [key in PlayerId]: Player;
-    };
+    status: GameStatus;
+    players: Player[];
     currentTurnScore: number;
-    activePlayerId: PlayerId;
-    diceValue: number | null; // null if game hasn't started or between turns
-    winner: PlayerId | null;
-    isPlaying: boolean;
+    activePlayerIndex: number;
+    diceValue: number | null;
+    winner: Player | null;
+    isRolling: boolean;
 }

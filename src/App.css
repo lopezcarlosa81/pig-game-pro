@@ -8,8 +8,10 @@
 
 .game-board {
   position: relative;
-  width: 100rem;
-  height: 60rem;
+  width: 90vw;
+  max-width: 1400px;
+  height: 85vh;
+  max-height: 900px;
   background-color: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
   border-radius: var(--border-radius-lg);
@@ -18,12 +20,15 @@
   overflow: hidden;
 }
 
+.game-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .center-controls {
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  /* Move dice up a bit */
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,14 +51,27 @@
     border-radius: 0;
   }
 
-  .center-controls {
-    position: static;
+  .player-sidebar {
+    width: 100%;
+    height: 200px;
+    /* Fixed height for mobile sidebar */
     flex-direction: row;
-    justify-content: center;
-    padding: 20px;
-    order: 2;
-    /* Put controls in middle visually if using flex column, but absolute is easier for desktop */
-    transform: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .sidebar-item {
+    min-width: 150px;
+    height: 100%;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .center-controls {
+    flex-direction: row;
+    gap: 2rem;
   }
 
   /* We might need more specific mobile tweaks, but let's start here */

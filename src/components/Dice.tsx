@@ -2,14 +2,15 @@ import './Dice.css';
 
 interface DiceProps {
     value: number | null;
+    isRolling?: boolean;
 }
 
-export const Dice = ({ value }: DiceProps) => {
-    if (!value) return <div className="dice-placeholder" />;
+export const Dice = ({ value, isRolling }: DiceProps) => {
+    if (!value && !isRolling) return <div className="dice-placeholder" />;
 
     return (
-        <div className={`dice dice-${value}`}>
-            {Array.from({ length: value }).map((_, i) => (
+        <div className={`dice ${value ? `dice-${value}` : ''} ${isRolling ? 'rolling' : ''}`}>
+            {Array.from({ length: value || 0 }).map((_, i) => (
                 <span key={i} className="dot" />
             ))}
         </div>
