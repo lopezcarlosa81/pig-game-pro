@@ -14,6 +14,13 @@ function App() {
     return <SetupScreen onStartGame={setupGame} />;
   }
 
+  const activePlayer = players[activePlayerIndex];
+  const currentTotal = activePlayer?.totalScore || 0;
+
+  let riskLevel: 'normal' | 'warning' | 'danger' = 'normal';
+  if (currentTotal >= 90) riskLevel = 'danger';
+  else if (currentTotal >= 80) riskLevel = 'warning';
+
   return (
     <main className="game-board">
       <PlayerSidebar
@@ -25,7 +32,11 @@ function App() {
 
       <div className="game-area">
         <div className="center-controls">
-          <Dice value={diceValue} isRolling={gameState.isRolling} />
+          <Dice
+            value={diceValue}
+            isRolling={gameState.isRolling}
+            riskLevel={riskLevel}
+          />
           <Controls
             onRoll={rollDice}
             onHold={holdScore}

@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import type { GameState, Player } from '../types/game';
 
@@ -19,7 +20,7 @@ export const useGame = () => {
     const setupGame = useCallback((playerNames: string[]) => {
         const newPlayers: Player[] = playerNames.map((name, index) => ({
             id: index + 1,
-            name: name || `Player ${index + 1}`,
+            name: name || `Player ${index + 1} `,
             totalScore: 0,
             isActive: index === 0,
         }));
@@ -45,8 +46,19 @@ export const useGame = () => {
             const dice = (array[0] % 6) + 1;
 
             setGameState((prev) => {
-                // If rolled a 1
-                if (dice === 1) {
+                const activePlayer = prev.players[prev.activePlayerIndex];
+                const currentTotal = activePlayer.totalScore;
+
+                // Determine losing numbers based on score
+                let losingNumbers = [1];
+                if (currentTotal >= 90) {
+                    losingNumbers = [1, 2, 3];
+                } else if (currentTotal >= 80) {
+                    losingNumbers = [1, 2];
+                }
+
+                // Check if rolled a losing number
+                if (losingNumbers.includes(dice)) {
                     const nextPlayerIndex = (prev.activePlayerIndex + 1) % prev.players.length;
 
                     const updatedPlayers = prev.players.map((p, i) => ({
@@ -56,7 +68,7 @@ export const useGame = () => {
 
                     return {
                         ...prev,
-                        diceValue: 1,
+                        diceValue: dice,
                         currentTurnScore: 0,
                         activePlayerIndex: nextPlayerIndex,
                         players: updatedPlayers,
@@ -64,7 +76,7 @@ export const useGame = () => {
                     };
                 }
 
-                // If rolled 2-6
+                // If rolled a safe number
                 return {
                     ...prev,
                     diceValue: dice,

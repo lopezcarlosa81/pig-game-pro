@@ -19,6 +19,24 @@
     /* transition: transform 0.2s; */
 }
 
+.dice.warning {
+    background-color: #ffd700;
+    /* Gold/Yellow */
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.dice.danger {
+    background-color: #ff4444;
+    /* Red */
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+}
+
+.dice.warning .dot,
+.dice.danger .dot {
+    background-color: #333;
+    /* Dark dots for contrast */
+}
+
 .dice.rolling {
     animation: roll 0.8s ease-in-out infinite;
 }
